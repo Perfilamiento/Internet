@@ -8,7 +8,7 @@ import glob
 def crear_mapa_osm(datos_resumen):
     # --- Configuración ---
     archivo_gpon = 'CajasGPON_202508.txt'
-    archivo_salida_html = 'mapa_cajas.html'
+    archivo_salida_html = 'index.html'
 
     # --- Proyección de coordenadas ---
     # UTM zona 17S (EPSG:32717) a WGS84 (lat/lon) (EPSG:4326)
