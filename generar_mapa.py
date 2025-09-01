@@ -101,7 +101,7 @@ def crear_mapa_osm(datos_resumen):
 
 if __name__ == '__main__':
     # URL de OneDrive que apunta al archivo CSV.
-    url_onedrive = 'https://1drv.ms/x/c/4049d6b4b6ccf513/EedjQLQMOZ9BuwUGAfoPLDoBbx9_GIHJq6MhOWvuBY0scQ?e=0hbHRr'
+    url_onedrive = 'https://1drv.ms/x/c/4049d6b4b6ccf513/IQTnY0C0DDmfQbsFBgH6Dyw6AcG-W7q8cCBMz3EJgc1q8sk'
 
     print(f"Descargando el archivo de resumen CSV desde OneDrive...")
 
