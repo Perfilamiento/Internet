@@ -100,26 +100,26 @@ def crear_mapa_osm(datos_resumen):
         print(f"Error al guardar o abrir el archivo HTML: {e}")
 
 if __name__ == '__main__':
-    # URL de OneDrive que apunta al archivo Excel.
+    # URL de OneDrive que apunta al archivo CSV.
     url_onedrive = 'https://1drv.ms/x/c/4049d6b4b6ccf513/EedjQLQMOZ9BuwUGAfoPLDoBbx9_GIHJq6MhOWvuBY0scQ?e=0hbHRr'
 
-    print(f"Descargando el archivo de resumen desde OneDrive...")
+    print(f"Descargando el archivo de resumen CSV desde OneDrive...")
 
     datos_resumen = []
     try:
-        # Leer el contenido del Excel directamente desde la URL
+        # Leer el contenido del CSV directamente desde la URL.
         # pandas se encarga de la descarga y lectura del archivo.
-        df = pd.read_excel(url_onedrive)
+        df = pd.read_csv(url_onedrive)
 
         # Convertir el DataFrame a una lista de diccionarios, 
         # que es el formato que la función crear_mapa_osm espera.
         datos_resumen = df.to_dict('records')
-        print("Archivo descargado y procesado correctamente.")
+        print("Archivo CSV descargado y procesado correctamente.")
 
     except Exception as e:
-        print(f"Error al descargar o procesar el archivo Excel desde la URL: {e}")
-        print("Por favor, asegúrate de que la URL es una URL de descarga directa.")
-        print("También, asegúrate de tener instaladas las librerías 'pandas' y 'openpyxl' (`pip install pandas openpyxl`).")
+        print(f"Error al descargar o procesar el archivo CSV desde la URL: {e}")
+        print("Por favor, asegúrate de que la URL es una URL de descarga directa de un archivo CSV.")
+        print("También, asegúrate de tener instalada la librería 'pandas' (`pip install pandas`).")
         exit()
 
     # --- Crear mapa ---
