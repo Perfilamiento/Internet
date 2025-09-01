@@ -3,7 +3,7 @@ import pyproj
 import folium
 import webbrowser
 import os
-import glob
+import pandas as pd
 
 def crear_mapa_osm(datos_resumen):
     # --- Configuración ---
@@ -45,9 +45,10 @@ def crear_mapa_osm(datos_resumen):
     puntos_mapa = []
     for row in datos_resumen:
         try:
-            nodo = row.get('Nodo', '').strip()
-            distrito = row.get('Distrito', '').strip()
-            caja = row.get('Caja', '').strip()
+            # Asegurarse de que los valores no sean nulos (NaN) que puede venir de pandas
+            nodo = str(row.get('Nodo', '')).strip() if pd.notna(row.get('Nodo')) else ''
+            distrito = str(row.get('Distrito', '')).strip() if pd.notna(row.get('Distrito')) else ''
+            caja = str(row.get('Caja', '')).strip() if pd.notna(row.get('Caja')) else ''
             
             if not (nodo and distrito and caja):
                 continue
@@ -99,25 +100,27 @@ def crear_mapa_osm(datos_resumen):
         print(f"Error al guardar o abrir el archivo HTML: {e}")
 
 if __name__ == '__main__':
-    # --- Encontrar el archivo de resumen más reciente ---
-    lista_archivos = sorted(glob.glob('resumen_cajas_*.csv'))
-    if not lista_archivos:
-        print("Error: No se encontraron archivos con el patrón 'resumen_cajas_*.csv'")
-        exit()
-    
-    archivo_resumen = lista_archivos[-1]
-    print(f"Usando el archivo de resumen más reciente: {archivo_resumen}")
+    # URL de OneDrive que apunta al archivo Excel.
+    url_onedrive = 'https://1drv.ms/x/c/4049d6b4b6ccf513/EedjQLQMOZ9BuwUGAfoPLDoBbx9_GIHJq6MhOWvuBY0scQ?e=0hbHRr'
 
-    # --- Cargar datos del resumen ---
+    print(f"Descargando el archivo de resumen desde OneDrive...")
+
     datos_resumen = []
     try:
-        with open(archivo_resumen, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            datos_resumen = list(reader)
-    except FileNotFoundError:
-        print(f"Error: No se encontró el archivo {archivo_resumen}")
+        # Leer el contenido del Excel directamente desde la URL
+        # pandas se encarga de la descarga y lectura del archivo.
+        df = pd.read_excel(url_onedrive)
+
+        # Convertir el DataFrame a una lista de diccionarios, 
+        # que es el formato que la función crear_mapa_osm espera.
+        datos_resumen = df.to_dict('records')
+        print("Archivo descargado y procesado correctamente.")
+
     except Exception as e:
-        print(f"Error al leer {archivo_resumen}: {e}")
+        print(f"Error al descargar o procesar el archivo Excel desde la URL: {e}")
+        print("Por favor, asegúrate de que la URL es una URL de descarga directa.")
+        print("También, asegúrate de tener instaladas las librerías 'pandas' y 'openpyxl' (`pip install pandas openpyxl`).")
+        exit()
 
     # --- Crear mapa ---
     if datos_resumen:
